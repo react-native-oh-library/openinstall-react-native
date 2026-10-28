@@ -1,0 +1,2 @@
+export { OpeninstallReactNativePackage as default } from './src/main/ets/OpeninstallReactNativeTurboModulesFactory';
+export { OpeninstallBridge, OpeninstallWakeUpHandler } from './src/main/ets/OpeninstallBridge';

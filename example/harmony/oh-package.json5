@@ -1,0 +1,24 @@
+{
+  "modelVersion": "5.0.0",
+  "license": "MIT",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.6",
+  },
+  "name": "rnoh",
+  "description": "example description",
+  "version": "1.0.0",
+  "dependencies": {},
+  "overrides": {
+    "@rnoh/react-native-openharmony": "file:../node_modules/@react-native-oh/react-native-harmony/react_native_openharmony.har",
+    "@react-native-ohos/openinstall-react-native": "file:../node_modules/@react-native-ohos/openinstall-react-native/harmony/openinstall_react_native.har"
+  },
+}
+
+
+
+
+
+
+
+
+

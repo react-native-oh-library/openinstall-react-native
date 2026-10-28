@@ -1,0 +1,102 @@
+{
+  "module": {
+    "name": "entry",
+    "type": "entry",
+    "description": "$string:module_desc",
+    "mainElement": "EntryAbility",
+    "deviceTypes": [
+      "default"
+    ],
+    // OpenInstall SDK 检查 http/https 链接能力所需
+    "querySchemes": [
+      "https",
+      "http"
+    ],
+    // OpeninstallBridge.preInit 所在 AbilityStage（SDK 预初始化）
+    "srcEntry": "./ets/entryability/EntryAbilityStage.ets",
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    // OpenInstall 应用标识：请替换为在 https://www.openinstall.com 控制台
+    // 为本应用创建应用后生成的 appkey
+    "metadata": [
+      {
+        "name": "com.openinstall.APP_KEY",
+        "value": "wp8w6j"
+      },
+      {
+        "name": "OPTLazyForEach",
+        "value": "true"
+      }
+    ],
+    // OpenInstall SDK 所需权限（均为 normal 级系统授权，无弹窗）
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.INTERNET"
+      },
+      {
+        "name": "ohos.permission.GET_WIFI_INFO"
+      },
+      {
+        "name": "ohos.permission.GET_BUNDLE_INFO"
+      },
+      {
+        "name": "ohos.permission.STORE_PERSISTENT_DATA"
+      }
+    ],
+    "abilities": [
+      {
+        "name": "EntryAbility",
+        "srcEntry": "./ets/entryability/EntryAbility.ets",
+        "description": "$string:EntryAbility_desc",
+        "icon": "$media:icon",
+        "label": "$string:EntryAbility_label",
+        "startWindowIcon": "$media:icon",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true,
+        // singleton：链接拉起已运行实例时走 onNewWant，保证拉起参数不丢
+        "launchType": "singleton",
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "action.system.home"
+            ]
+          },
+          // OpenInstall 一键拉起（自定义 scheme）。scheme 值请替换为
+          // OpenInstall 控制台为本应用生成的 scheme
+          {
+            "entities": [
+              "entity.system.default",
+              "entity.system.browsable"
+            ],
+            "actions": [
+              "ohos.want.action.viewData"
+            ],
+            "uris": [
+              {
+                "scheme": "wp8w6j"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "extensionAbilities": [
+      {
+        "name": "EntryBackupAbility",
+        "srcEntry": "./ets/entrybackupability/EntryBackupAbility.ets",
+        "type": "backup",
+        "exported": false,
+        "metadata": [
+          {
+            "name": "ohos.extension.backup",
+            "resource": "$profile:backup_config"
+          }
+        ]
+      }
+    ]
+  }
+}

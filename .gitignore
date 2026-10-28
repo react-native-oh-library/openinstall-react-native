@@ -1,1 +1,29 @@
+# OSX
 .DS_Store
+
+# node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output
+/dist
+
+# npm pack output (root only; example/harmony/hvigor 下的插件 tgz 是 vendored，需提交)
+/*.tgz
+
+# IDE
+.idea/
+.vscode/
+
+# HarmonyOS lib module build output
+harmony/openinstall_react_native/build/
+harmony/openinstall_react_native/.cxx/
+harmony/openinstall_react_native/.hvigor/
+harmony/openinstall_react_native/.preview/
+harmony/openinstall_react_native/oh_modules/
+
+# rn.py build hap fingerprints / local build metadata
+.rn-build/
+
+package-lock.json

@@ -1,226 +1,360 @@
-# Openinstall React Native Plugin
-openinstall-react-native 是openinstall官方开发的 React Native 插件，使用该插件可以方便快速地集成openinstall相关功能。
+> 文档模板：v0.4.2
 
-**针对使用了 渠道统计 功能中的 广告渠道 效果监测功能的集成，需要参考 [补充文档](#ad)**
+<p align="center">
+  <h1 align="center"> <code>openinstall-react-native</code> </h1>
+</p>
 
-**从1.3.0开始，插件将不再自动初始化，需要用户手动调用初始化接口**
+本项目基于 [openinstall-react-native](https://github.com/OpenInstall/openinstall-react-native) 开发。
 
-## 一、安装插件
+版本所属关系如下：
 
-在您的项目根目录下执行
+| 三方库名称    | 三方库版本（npm地址）    | 发布信息     | 支持RN版本    | Autolink     | 编译API版本     | 社区基线版本    |  源码地址   |
+| ------------ | ------------ | ------------------------------ | ------------- | ------------- |------------------------ | ------------- | ------------- | 
+| @react-native-ohos/openinstall-react-native | [~ 2.0.0](https://www.npmjs.com/package/@react-native-ohos/openinstall-react-native)    | [Gitcode Releases](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/releases) | 0.84.* | 是 | API12+ | 2.0.0 | [master](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native) |
 
-```
-npm install openinstall-react-native --save
-```
+## 简介
 
-**React Native 0.60 之前**  
+OpenInstall 插件用于 React Native。<br/>
+OpenInstall 提供 App 、一键拉起（scheme / App Linking）、渠道统计、效果点统计与裂变分享统计等移动归因能力。<br/>
+开发者无需在工程中手工拼接渠道参数，即可完成安装来源追踪与拉起参数还原。
 
-```
-react-native link
-```
-- link的时候如果出现 `Error: Cannot find module 'asap/raw'` 则先执行 `npm install` 再 `react-native link` 就好了
+## 下载安装
 
-**React Native 0.60 之后**  
+进入到工程目录并输入以下命令：
 
-如果你的iOS项目是通过Cocoapods来集成React Native（即原生应用集成react-native），可通过如下步骤安装本插件。（注意：使用 pod 就无须执行 react-native link 了，否则会有冲突。）
+**npm**
 
-1. 在ios/Podfile文件中添加如下代码：
-```
- pod 'openinstall-react-native', :path => '../node_modules/openinstall-react-native'
-```
-2. 在Podfile文件所在目录下执行命令：
-```
- pod install
+```bash
+npm install @react-native-ohos/openinstall-react-native
 ```
 
-## 二、自动集成方式
-> **注意：** 如自动集成方式失败，无需惊慌，请参考手动集成方式 [手动集成文档](https://github.com/OpenInstall/openinstall-react-native/tree/master/documents)
+**yarn**
 
-（1）使用自动集成脚本集成代码和部分配置
-```
-npm run openinstall <yourAppKey> <yourScheme>
-```
-- yourAppKey指的是你在openinstall官方账号后台，创建应用后分配的AppKey
-- yourScheme指的是你在openinstall官方账号后台，创建应用后分配的scheme  
-(scheme详细获取位置：openinstall应用控制台->Android集成->Android应用配置，iOS同理）  
-
-举例：
-```
-npm run openinstall e7iomw rc8tey
-```
-（2）xcode配置（只对iOS）  
-
-在 iOS 工程中，如果要使用universal links(通用链接)的拉起功能，需要开启 Associated Domains功能，请到[苹果开发者网站](https://developer.apple.com)，选择Certificate, Identifiers & Profiles，选择相应的AppID，开启Associated Domains。注意：当AppID重新编辑过之后，需要更新相应的mobileprovision证书。(详细配置步骤请看[React-Native接入指南](https://www.openinstall.io/doc/RN_sdk.html))，如果已经开启过Associated Domains功能，进行下面操作：  
-- 在左侧导航器中点击您的项目
-- 选择 `Capabilities` 标签
-- 打开 `Associated Domains` 开关
-- 添加 openinstall 官网后台中应用对应的关联域名（openinstall应用控制台->iOS集成->iOS应用配置->关联域名(Associated Domains)）
-
-> **注意：** 在 iOS 工程中如果找不到头文件可能要在 TARGETS-> BUILD SETTINGS -> Search Paths -> Header Search Paths 添加路径：
->   `$(SRCROOT)/../node_modules/openinstall-react-native/ios/RCTOpenInstall`
-> 
-
-## 三、使用指南
-
-在需要使用 openinstall 的文件中引入插件：
-``` js
-import OpeninstallModule from 'openinstall-react-native'
+```bash
+yarn add @react-native-ohos/openinstall-react-native
 ```
 
-### 1. 初始化
+## Link
 
-确保用户同意《隐私政策》之后，再初始化 openinstall。参考 [应用合规指南](https://www.openinstall.io/doc/rules.html)
-``` js
-OpeninstallModule.init()
-```
-> **注意：**   
-> 1.3.0之前的版本 openinstall 插件内部会自动初始化，之后版本需要开发者在合适的时机主动调用初始化接口  
-> iOS用户使用插件1.3.0之前的版本升级到新版本，需要参考新的手动集成文档修改
+|                                      | 是否支持autolink | RN框架版本 |
+|--------------------------------------|----------------|-----------|
+| ~ 2.0.0                              | Yes            |  0.84     |
 
-### 2. 快速安装和一键拉起
+使用AutoLink的工程需要根据该文档配置，Autolink框架指导文档：https://gitcode.com/CPF-RN/ohos_react_native/blob/master/docs/zh-cn/Autolinking.md
 
-通常在 `componentDidMount` 中注册唤醒回调监听
-``` js
-componentDidMount() {
-  //该方法用于监听app通过univeral link或scheme拉起后获取唤醒参数
-  this.receiveWakeupListener = map => {
-     if (map) {
-	   //do your work here
-     }        
-   Alert.alert('唤醒参数', JSON.stringify(map)) 
-  } 
-  OpeninstallModule.addWakeUpListener(this.receiveWakeupListener)  
-}
+如您使用的版本支持 Autolink，并且工程已接入 Autolink，可跳过ManualLink配置。
+<details>
+  <summary>ManualLink: 此步骤为手动配置原生依赖项的指导</summary>
 
-componentWillUnMount() {
-  OpeninstallModule.removeWakeUpListener(this.receiveWakeupListener)//移除监听
+首先需要使用 DevEco Studio 打开项目里的 HarmonyOS 工程 `harmony`。
+
+### 1. Overrides RN SDK
+
+为了让工程依赖同一个版本的 RN SDK，需要在工程根目录的 `oh-package.json5` 添加 overrides 字段，指向工程需要使用的 RN SDK 版本。替换的版本既可以是一个具体的版本号，也可以是一个模糊版本，还可以是本地存在的 HAR 包或源码目录。
+
+关于该字段的作用请阅读[官方说明](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/ide-oh-package-json5-V5#zh-cn_topic_0000001792256137_overrides)
+
+```json
+{
+  "overrides": {
+    "@rnoh/react-native-openharmony": "^0.72.38" // ohpm 在线版本
+    // "@rnoh/react-native-openharmony" : "./react_native_openharmony.har" // 指向本地 har 包的路径
+    // "@rnoh/react-native-openharmony" : "./react_native_openharmony" // 指向源码路径
+  }
 }
 ```
-> **注意：**  
-> - 第二个函数返回的是map或字典，包含动态安装参数（data）和渠道参数（channel），只有通过渠道二维码或链接安装app后，才会有渠道参数
-> - 如果动态安装参数（data）和渠道参数（channel）同时为空，则map返回null
 
-### 3. 携带参数安装（高级版功能）
+### 2. 引入原生端代码
 
-调用如下方法，可重复获取（理论上可在任意位置获取安装参数）：
-``` js
-OpeninstallModule.getInstall(10, map => {
-  if (map) {
-    //do your work here
-  }        
-  Alert.alert('安装参数', JSON.stringify(map))     
-})
+> [!TIP] har 包位于三方库安装路径的 `harmony` 文件夹下；原生底座依赖 `@openinstall/sdk`（OHPM）会随 har 包一并自动安装。
+
+打开 `entry/oh-package.json5`，添加以下依赖
+
+```json
+"dependencies": {
+    "@react-native-ohos/openinstall-react-native": "file:../../node_modules/@react-native-ohos/openinstall-react-native/harmony/openinstall_react_native.har"
+  }
 ```
-> **注意：**  
-> - 第一个传入的参数为超时时长，一般为10s左右，如果只是在后台默默统计或使用，可以设置更长时间；第二个函数返回的是map或字典，包含动态安装参数（data）和渠道参数（channel），注意：只有通过渠道二维码或链接安装app后，才会有渠道参数
-> - 如果动态安装参数（data）和渠道参数（channel）同时为空，则map返回null
-> - 对于iOS，该方法尽量写在业务场景需要参数的位置调用（在业务场景时，网络一般都是畅通的），例如，可以选择在用户注册成功后调用该方法获取参数，对用户进行奖励。原因是iOS首次安装、首次启动的app，会询问用户获取网络权限，用户允许后SDK才能正常联网去获取参数。如果调用过早，可能导致网络权限还未允许就被调用，导致参数无法及时拿到，误以为参数不存在
 
-### 4. 渠道统计（高级版功能）
-SDK 会自动完成访问量、点击量、安装量、活跃量、留存率等统计工作。其它业务相关统计由开发人员使用 api 上报
+点击右上角的 `sync` 按钮
 
-#### 4.1 上报注册事件
-请确保在用户注册成功后，调用接口上报注册量
-``` js
-OpeninstallModule.reportRegister()
+或者在命令行终端执行：
+
+```bash
+cd entry
+ohpm install
 ```
-#### 4.2 上报效果点
-统计终端用户对某些特殊业务的使用效果，如充值金额，分享次数等等。调用接口前，请先进入 openinstall 控制台的 “效果点管理” 中添加对应的效果点，第一个参数对应控制台中的 **效果点ID**
-``` js
-OpeninstallModule.reportEffectPoint('effect_test',1)
+
+### 3. 配置 CMakeLists
+
+打开 `entry/src/main/cpp/CMakeLists.txt`，添加：
+
+```diff
+set(OH_MODULES "${CMAKE_CURRENT_SOURCE_DIR}/../../../oh_modules")
+
+add_subdirectory("${RNOH_CPP_DIR}" ./rn)
+
++ add_subdirectory("${OH_MODULES}/@react-native-ohos/openinstall-react-native/src/main/cpp" ./openinstall_react_native)
+
+add_library(rnoh_app SHARED
+    "./PackageProvider.cpp"
+    "${RNOH_CPP_DIR}/RNOHAppNapiBridge.cpp"
+)
+target_link_libraries(rnoh_app PUBLIC rnoh)
+
++ target_link_libraries(rnoh_app PUBLIC openinstall_react_native)
 ```
-#### 4.3 效果点明细统计
-请在 openinstall 控制台的 “效果点管理” 中添加对应的效果点，并启用“记录明细”，添加自定义参数
-``` js
-OpeninstallModule.reportEffectPoint('effect_detail',1, {"k1": "v1", "k2", "v2"})
+
+### 4. 注册 Package（C++ 侧）
+
+打开 `entry/src/main/cpp/PackageProvider.cpp`，添加：
+
+```diff
+  #include "RNOH/PackageProvider.h"
++ #include "OpeninstallReactNativePackage.h"
+
+  using namespace rnoh;
+
+  std::vector<std::shared_ptr<Package>> PackageProvider::getPackages(Package::Context ctx) {
+      return {
++       std::make_shared<OpeninstallReactNativePackage>(ctx),
+      };
+  }
 ```
-### 5. 裂变分享（高级功能）
-分享上报主要是统计某个具体用户在某次分享中，分享给了哪个平台，再通过JS端绑定被分享的用户信息，进一步统计到被分享用户的激活回流等情况。
-``` js
-OpeninstallModule.reportShare("shareCode001", "QQ", map => {
-  Alert.alert("分享结果", JSON.stringify(map))
-})
+
+### 5. 注册 Package（ArkTS 侧）
+
+打开 `entry/src/main/ets/RNPackagesFactory.ets`，添加：
+
+```diff
++ import { OpeninstallReactNativePackage } from '@react-native-ohos/openinstall-react-native/ts';
+
+  export function createRNPackages(ctx: RNPackageContext): RNPackage[] {
+    return [
++     new OpeninstallReactNativePackage(ctx),
+    ];
+  }
 ```
-可根据返回的数据中的shouldRetry决定是否需要重试，以及message查看失败的原因
 
-## 四、导出apk/ipa包并上传
-- 代码集成完毕后，需要导出安装包上传openinstall后台，openinstall会自动完成所有的应用配置工作。  
-![上传安装包](https://res.cdn.openinstall.io/doc/upload-ipa-jump.png)
-- 上传完成后即可开始在线模拟测试，体验完整的App安装/拉起流程；待测试无误后，再完善下载配置信息。
-![在线测试](https://res.cdn.openinstall.io/doc/js-test.png) 
+</details>
 
+### 运行
 
-## 如有疑问
+点击右上角的 `sync` 按钮
 
-若您在集成或使用中有任何疑问或者困难，请 [咨询openinstall客服](https://www.openinstall.io/)。 
+或者在命令行终端执行：
 
----
+```bash
+cd entry
+ohpm install
+```
 
-<a id="ad"></a>
+然后编译、运行即可。
 
-## 广告平台接入
+## 约束与限制
 
-### Android 平台  
-1、针对广告平台接入，新增配置接口，在调用 init 之前调用。参考 [广告平台对接Android集成指引](https://www.openinstall.io/doc/ad_android.html)
-``` js
-var options = {
-    adEnabled: true,
+### 兼容性
+
+要使用此库，需要使用正确的 React-Native 和 RNOH 版本。另外，还需要使用配套的 DevEco Studio 和 手机 ROM。
+
+1.RNOH: 0.84.2; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.878; ROM:6.0.0.130;
+
+### 权限要求
+
+本库运行需要以下权限（均为 normal 级系统授权），在 `entry/src/main/module.json5` 中添加：
+
+```json
+requestPermissions: [
+  { "name": "ohos.permission.INTERNET" },
+  { "name": "ohos.permission.GET_WIFI_INFO" },
+  { "name": "ohos.permission.GET_BUNDLE_INFO" },
+  { "name": "ohos.permission.STORE_PERSISTENT_DATA" },
+],
+```
+
+### 编译运行API要求
+
+> [!TIP] 当前三方库所有版本均已实现版本隔离，支持在 `API12+` 工程编译，及 `API12+` ROM运行。
+
+## 使用示例
+
+下面的代码展示了这个库的基本使用场景：
+
+> [!WARNING] 使用时 import 的库名不变。
+
+```javascript
+import React from 'react';
+import { View } from 'react-native';
+import openinstall from 'openinstall-react-native';
+
+export default class App extends React.Component {
+  componentDidMount() {
+    // 1. 初始化（可选配置：adEnabled / oaid / macAddress；clipBoardEnabled 须在 init 前调用）
+    openinstall.clipBoardEnabled(true);
+    openinstall.configAndroid({ adEnabled: true, oaid: 'xxx' });
+    openinstall.init();
+
+    // 2. 一键拉起（scheme / App Linking）：channel 与 data 均为空时回调 null
+    openinstall.addWakeUpListener((wakeupResult) => {
+      console.log('wake up:', wakeupResult);
+    });
+
+    // 3. App 传参安装：超时一般 10~15 秒；自然安装（无渠道参数）回调 null
+    openinstall.getInstall(10, (installResult) => {
+      console.log('install:', installResult);
+    });
+
+    // 4. 渠道统计
+    openinstall.reportRegister();
+    openinstall.reportEffectPoint('effect_test', 100, { goodsId: '10086' });
+
+    // 5. 裂变分享统计
+    openinstall.reportShare('c0011', 'QQ', (ret) => {
+      console.log(ret.shouldRetry, ret.message);
+    });
+  }
+
+  render() {
+    return <View style={{ flex: 1 }} />;
+  }
 }
-OpeninstallModule.configAndroid(options);
-```
-options 可选参数如下：
-| 参数名| 参数类型 | 描述 |  
-| --- | --- | --- |
-| adEnabled| bool | 广告平台接入开关（必须） |
-| macDisabled | bool | 是否禁止 SDK 获取 mac 地址 |
-| imeiDisabled | bool | 是否禁止 SDK 获取 imei |
-| gaid | string | 通过 google api 获取到的 advertisingId |
-| oaid | string | 通过移动安全联盟获取到的 oaid |
-
-> **注意：** `config(adEnabled, oaid, gaid)` 接口已移除，请开发者使用最新配置接口
-
-2、为了精准地匹配到渠道，需要获取设备唯一标识码（IMEI），因此需要在 `AndroidManifest.xml` 中添加权限声明
-``` xml
-<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-```
-3、在权限申请成功后，再进行openinstall初始化，示例代码如下： 
-导入包
-``` js
-import { PermissionsAndroid } from 'react-native'
-```
-在 `App.js` 的 `componentDidMount` 方法中初始化，并且在初始化之前申请权限
-``` js
-this.receiveWakeupListener = map => {    
-    Alert.alert('唤醒参数', JSON.stringify(map)) 
-} 
-var permission = PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE;
-PermissionsAndroid.request(permission)
-    .then(granted => {
-        if (granted === PermissionsAndroid.RESULTS.GRANTED){
-            //权限获取成功
-        }else{
-            //权限获取失败
-        }
-        // openinstall 相关代码
-        var options = {
-            adEnabled: true,
-            oaid: "通过移动安全联盟获取到的 oaid",
-        }
-        OpeninstallModule.configAndroid(options);
-        OpeninstallModule.init();
-        OpeninstallModule.addWakeUpListener(this.receiveWakeupListener);
-        OpeninstallModule.getInstall(8, map => {
-          if (map) {
-            //do your work here
-          }
-          Alert.alert("安装参数", JSON.stringify(map))
-        })
-    })
 ```
 
-### iOS 平台
-使用第三方插件获取iOS idfa 并传给 openinstall 插件进行初始化
-``` js
-var options = {ASAEnabled: true, ASADebug: true, adEnabled: true, idfaStr: "通过第三方插件获取的 iOS idfa", caid1: "通过广告联盟获取的caid1", caid2: "通过广告联盟获取的caid2"}
-OpeninstallModule.init(options);
+## 使用说明
+
+### 宿主工程配置（必需）
+
+1. **appkey**：在 `entry/src/main/module.json5` 的 `module.metadata` 配置 OpenInstall 控制台生成的 appkey：
+
+```json5
+{
+  "module": {
+    "metadata": [
+      { "name": "com.openinstall.APP_KEY", "value": "你的 appkey" }
+    ]
+  }
+}
 ```
+
+2. **一键拉起**：在目标 Ability 的 `skills` 配置自定义 scheme 或 App Linking（https + 关联域名 + `domainVerify: true`，域名需在 AGC 发布），并建议 `launchType: "singleton"` 以保证热启动走 `onNewWant`。
+
+3. **生命周期接管**：宿主需把 Want 交给插件（参考 Example）：
+
+```typescript
+// AbilityStage.onCreate
+import { OpeninstallBridge } from '@react-native-ohos/openinstall-react-native';
+
+OpeninstallBridge.preInit(this.context);
+
+// EntryAbility.onCreate / onNewWant
+OpeninstallBridge.onAbilityCreate(want);
+OpeninstallBridge.onAbilityNewWant(want);
+```
+
+> 插件内部已对齐 Android 原实现语义：监听注册前到达的拉起数据暂存重放、init 前到达的 Want 暂存到 init 后处理；拉起参数经 `DeviceEventEmitter` 事件 `OpeninstallWakeupCallBack` 下发。
+
+**初始化**
+
+```javascript
+openinstall.clipBoardEnabled(true);                      // 剪贴板免填邀请码开关（init 前调用）
+openinstall.configAndroid({ adEnabled: true, oaid: 'xxx', macAddress: 'xxx' });
+openinstall.init();                                       // 也可 openinstall.init({ adEnabled: true }) 等价于先 config 再 init
+```
+
+**一键拉起监听**
+
+```javascript
+const wakeUpCallback = (result) => console.log('wake up:', result); // {channel, data} 或 null
+openinstall.addWakeUpListener(wakeUpCallback);
+openinstall.removeWakeUpListener(wakeUpCallback);
+```
+
+**获取安装参数**
+
+```javascript
+// s：超时时长（秒），一般 10~15s；只在后台统计可用更长时间
+openinstall.getInstall(10, (result) => {
+  // {channel, data, shouldRetry, message} 或 null；超时/网络失败 shouldRetry=true
+});
+```
+
+**渠道统计**
+
+```javascript
+openinstall.reportRegister();                                       // 注册事件（鸿蒙端返回 Promise，可选用）
+openinstall.reportEffectPoint('effect_test', 100, { goodsId: '10086' }); // 效果点 + 明细
+```
+
+**裂变分享统计**
+
+```javascript
+openinstall.reportShare('c0011', 'QQ', (ret) => {
+  console.log(ret.shouldRetry, ret.message); // 网络类失败 shouldRetry=true
+});
+```
+
+## 接口说明
+
+> [!TIP] "Platform"列表示该属性在原三方库上支持的平台。
+
+> [!TIP] "OpenHarmony Support"列为 yes 表示 OpenHarmony平台支持 该属性；no 则表示不支持；partially 表示部分支持。使用方法跨平台一致，效果对标 iOS 或 Android 的效果。
+
+### API
+
+| 名称     | 类型     | 参数类型 | 返回值 | 必填    | 平台 | OpenHarmony平台支持 | 描述  |
+|--------|---------|-----|-------|-------|--------|-----|-----------------|
+| config | function | adEnabled: boolean, oaid?: string, gaid?: string | void | No | Android | no | 旧版配置接口（1.5.0 废除），gaid 为 Android 广告标识，鸿蒙无对应（JS 层守卫） |
+| configAndroid | function | options: {adEnabled?, oaid?, macAddress?} | void | No | Android | yes | 初始化前配置；鸿蒙承接 OpInitConfig 支持的配置项（gaid/imei 等忽略） |
+| configIOS | function | options | void | No | iOS | no | iOS 广告归因配置（ASA/idfa/caid），苹果生态专有 |
+| serialEnabled | function | enabled: boolean | void | No | Android | no | 设备序列号开关，鸿蒙 SDK 无对应能力（JS 层守卫） |
+| clipBoardEnabled | function | enabled: boolean | void | No | Android, iOS | yes | 剪贴板免填邀请码（场景还原）开关，须在 init 前调用（映射 OpInitConfig.fetchPasteData，默认开启） |
+| init | function | options?: {adEnabled?, oaid?, macAddress?} | void | No | All | yes | 初始化 SDK；鸿蒙可传配置，等价于先 configAndroid 再 init |
+| getInstall | function | s: number, cb: (result) => void | void | No | All | yes | 获取安装动态参数；s 为超时秒数，result 为 {channel, data, shouldRetry?, message?} 或 null |
+| getInstallCanRetry | function | s: number, cb: (result) => void | void | No | Android | no | 可重试获取安装参数（不中断初始化读取匹配数据），Android 专有（JS 层守卫） |
+| addWakeUpListener | function | cb: (result) => void | void | No | All | yes | 监听一键拉起参数；result 为 {channel, data} 或 null，冷启动参数在注册后重放 |
+| getWakeUpAlwaysCallback | function | cb: (result) => void | void | No | Android | no | 无数据也回调的拉起监听，Android 专有（JS 层守卫） |
+| removeWakeUpListener | function | cb: (result) => void | void | No | All | yes | 移除拉起监听（传入 addWakeUpListener 注册的同一回调） |
+| reportRegister | function | / | void（鸿蒙端额外返回 Promise） | No | All | yes | 上报注册事件（注册量统计）；鸿蒙端 Promise 成功 resolve / 失败 reject（携带 SDK 错误码），可选择性使用 |
+| reportEffectPoint | function | effectID: string, effectValue: number, extraMap?: object | void（鸿蒙端额外返回 Promise） | No | All | yes | 上报效果点；effectID 需在 OpenInstall 控制台预建，effectValue 金额以分计，extraMap 为效果点明细 |
+| reportShare | function | shareCode: string, sharePlatform: string, cb: (result) => void | void | No | All | yes | 裂变分享统计；回调参数为 {shouldRetry, message}，网络类失败 shouldRetry=true |
+
+> 字段契约：SDK `OpData{channelCode, bindData}` → JS `{channel, data}`（bindData 序列化为字符串）；`channel` 与 `data` 均为空且无错误信息时回调 `null`；错误经 `{shouldRetry, message}` 返回（超时/网络请求失败 shouldRetry=true，其余 false）。
+
+## 遗留问题
+
+- Example 内置的是测试 appkey（`openinstall_test_appkey`）与测试 scheme（`openinstalltest`），真实渠道归因/拉起需替换为 OpenInstall 控制台为本应用生成的值。
+- 真实归因数据依赖 OpenInstall 服务端与外网；未配置控制台前，接口返回真实错误（如 REQUEST_FAIL / TIMEOUT），属预期行为。
+
+## 其他
+
+无
+
+## 目录结构
+
+````
+/rntpc_openinstall-react-native  # 项目根目录
+├── harmony                        # 鸿蒙适配代码
+│    └─ openinstall_react_native.har     # har 包
+│    └─ openinstall_react_native         # 鸿蒙适配核心代码
+│          └─ index.ets                  # 鸿蒙适配代码入口（导出 Package / OpeninstallBridge）
+│          └─ src/main/ets
+│              └─ OpeninstallTurboModule.ets         # TurboModule 实现（@openinstall/sdk 桥接）
+│              └─ OpeninstallBridge.ets              # preInit / Want 生命周期桥接
+│              └─ OpeninstallReactNativeTurboModulesFactory.ets
+│          └─ src/main/cpp
+│              └─ OpeninstallReactNativePackage.h    # C++ Package
+├── src                            # RN 代码
+│    └─ index.ts                   # 入口文件
+│    └─ specs/v1/NativeOpeninstallModule.ts  # TurboModule Spec
+├── example                        # 示例工程（含鸿蒙 harmony 工程）
+├── README.md                      # 中文安装使用方法
+└── CHANGELOG.md
+````
+
+## 贡献代码
+
+使用过程中发现任何问题都可以提交 [Issue](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/issues)，当然，也非常欢迎提交 [PR](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/pulls) 。
+
+## 开源协议
+
+本项目基于 [ISC](https://github.com/OpenInstall/openinstall-react-native/blob/master/LICENSE) 协议，请自由地享受和参与开源；原生底座 `@openinstall/sdk` 为 Apache-2.0。
