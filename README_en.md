@@ -10,7 +10,7 @@ The version correspondence details are as follows:
 
 | Name | Version(Npm Address) | Release Information | Supported RN Version | Supported Autolink | Compile API Version | Community Baseline Version | Source code address |
 | --------------| -------------- | ------------------------------ | ------------- | ------------- |------------------------ | ------------ | ------------- | 
-| @react-native-ohos/openinstall-react-native | [~ 2.0.0](https://www.npmjs.com/package/@react-native-ohos/openinstall-react-native)    | [Gitcode Releases](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/releases) | 0.84.* | Yes | API12+ | 2.0.0 | [master](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native) |
+| @react-native-ohos/openinstall-react-native | [~ 2.0.0](https://www.npmjs.com/package/@react-native-ohos/openinstall-react-native)    | [Gitcode Releases](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/releases) | 0.72.*/0.77./\*0.82./\*0.84.\*/ | Yes | API12+ | 2.0.0 | [master](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native) |
 
 ## Introduction
 
@@ -38,7 +38,7 @@ yarn add @react-native-ohos/openinstall-react-native
 
 |                                      | Supported Autolink | Supported RN Version |
 |--------------------------------------|--------------------|----------------------|
-| ~ 2.0.0                              | Yes                | 0.84                 |
+| ~ 2.0.0                              | Yes                | 0.72.*/0.77./\*0.82./\*0.84.\*/                 |
 
 Projects using AutoLink need to be configured according to this document, AutoLink framework guide: https://gitcode.com/CPF-RN/ohos_react_native/blob/master/docs/zh-cn/Autolinking.md
 

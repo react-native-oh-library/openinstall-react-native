@@ -27,6 +27,7 @@
     "@react-native/metro-config": "^0.72.11",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
+    "@react-native-oh/react-native-harmony-cli": "npm:@react-native-oh/react-native-harmony-cli@0.72.139",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
     "eslint": "^8.19.0",
@@ -39,6 +40,7 @@
   },
   "overrides": {
     "@react-native-community/cli": "11.3.6",
+    "@rnoh/react-native-harmony-cli": "npm:@react-native-oh/react-native-harmony-cli@0.72.139",
     "@react-native/codegen": "0.74.0"
   },
   "resolutions": {
