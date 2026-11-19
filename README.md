@@ -6,11 +6,11 @@
 
 本项目基于 [openinstall-react-native](https://github.com/OpenInstall/openinstall-react-native) 开发。
 
-版本所属关系如下：
+该第三方库的仓库已迁移至 AtomGit，且支持直接从 npm 下载，新的包名为：`@react-native-ohos/openinstall-react-native`，版本关系如下：
 
 | 三方库名称    | 三方库版本（npm地址）    | 发布信息     | 支持RN版本    | Autolink     | 编译API版本     | 社区基线版本    |  源码地址   |
 | ------------ | ------------ | ------------------------------ | ------------- | ------------- |------------------------ | ------------- | ------------- | 
-| @react-native-ohos/openinstall-react-native | [~ 2.0.0](https://www.npmjs.com/package/@react-native-ohos/openinstall-react-native)    | [Gitcode Releases](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/releases) | 0.72.*/0.77./\*0.82./\*0.84.\*/ | 是 | API12+ | 2.0.0 | [master](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native) |
+| @react-native-ohos/openinstall-react-native | [~ 2.0.0](https://www.npmjs.com/package/@react-native-ohos/openinstall-react-native)    | [AtomGit Releases](https://atomgit.com/CPF-RN/rntpc_openinstall-react-native/releases) | 0.72.*/0.77./\*0.82./\*0.84.\*/\*0.86.\*/ | 是 | API12+ | 2.0.0 | [master](https://atomgit.com/CPF-RN/rntpc_openinstall-react-native) |
 
 ## 简介
 
@@ -38,9 +38,9 @@ yarn add @react-native-ohos/openinstall-react-native
 
 |                                      | 是否支持autolink | RN框架版本 |
 |--------------------------------------|----------------|-----------|
-| ~ 2.0.0                              | Yes            |  0.72.*/0.77./\*0.82./\*0.84.\*/     |
+| ~ 2.0.0                              | Yes            |  0.72.*/0.77./\*0.82./\*0.84.\*/\*0.86.\*/     |
 
-使用AutoLink的工程需要根据该文档配置，Autolink框架指导文档：https://gitcode.com/CPF-RN/ohos_react_native/blob/master/docs/zh-cn/Autolinking.md
+使用AutoLink的工程需要根据该文档配置，Autolink框架指导文档：https://atomgit.com/CPF-RN/ohos_react_native/blob/main/docs/zh-cn/02-开发/02-开发指南/Autolinking.md 。
 
 如您使用的版本支持 Autolink，并且工程已接入 Autolink，可跳过ManualLink配置。
 <details>
@@ -57,7 +57,7 @@ yarn add @react-native-ohos/openinstall-react-native
 ```json
 {
   "overrides": {
-    "@rnoh/react-native-openharmony": "^0.72.38" // ohpm 在线版本
+    "@rnoh/react-native-openharmony": "^0.86.1" // ohpm 在线版本
     // "@rnoh/react-native-openharmony" : "./react_native_openharmony.har" // 指向本地 har 包的路径
     // "@rnoh/react-native-openharmony" : "./react_native_openharmony" // 指向源码路径
   }
@@ -66,9 +66,16 @@ yarn add @react-native-ohos/openinstall-react-native
 
 ### 2. 引入原生端代码
 
-> [!TIP] har 包位于三方库安装路径的 `harmony` 文件夹下；原生底座依赖 `@openinstall/sdk`（OHPM）会随 har 包一并自动安装。
+目前有两种方法：
 
-打开 `entry/oh-package.json5`，添加以下依赖
+- 通过 har 包引入。
+- 直接链接源码。
+
+方法一：通过har包引入（推荐）
+
+> [!TIP] har 包位于三方库安装路径的 `harmony` 文件夹下。
+
+`entry/oh-package.json5`，添加以下依赖：
 
 ```json
 "dependencies": {
@@ -85,7 +92,7 @@ cd entry
 ohpm install
 ```
 
-### 3. 配置 CMakeLists
+### 3. 配置 CMakeLists 并引入 OpeninstallReactNativePackage
 
 打开 `entry/src/main/cpp/CMakeLists.txt`，添加：
 
@@ -122,7 +129,7 @@ target_link_libraries(rnoh_app PUBLIC rnoh)
   }
 ```
 
-### 5. 注册 Package（ArkTS 侧）
+### 5. 在 ArkTs 侧引入 OpeninstallReactNativePackage
 
 打开 `entry/src/main/ets/RNPackagesFactory.ets`，添加：
 
@@ -155,9 +162,9 @@ ohpm install
 
 ### 兼容性
 
-要使用此库，需要使用正确的 React-Native 和 RNOH 版本。另外，还需要使用配套的 DevEco Studio 和 手机 ROM。
+本文档内容基于以下版本验证通过：
 
-1.RNOH: 0.84.2; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.878; ROM:6.0.0.130;
+1.RNOH: 0.86.1; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.878; ROM:6.0.0.130;
 
 ### 权限要求
 
@@ -295,9 +302,9 @@ openinstall.reportShare('c0011', 'QQ', (ret) => {
 
 ## 接口说明
 
-> [!TIP] "Platform"列表示该属性在原三方库上支持的平台。
+> [!TIP] “平台”列表示该属性在原三方库上支持的平台。
 
-> [!TIP] "OpenHarmony Support"列为 yes 表示 OpenHarmony平台支持 该属性；no 则表示不支持；partially 表示部分支持。使用方法跨平台一致，效果对标 iOS 或 Android 的效果。
+> [!TIP] "OpenHarmony平台支持"其中"是"表示OpenHarmony平台支持该属性；"否"则表示不支持；"部分支持"表示仅实现了功能的一部分。使用方法跨平台一致，效果对标iOS或Android的效果。
 
 ### API
 
@@ -353,7 +360,7 @@ openinstall.reportShare('c0011', 'QQ', (ret) => {
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提交 [Issue](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/issues)，当然，也非常欢迎提交 [PR](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/pulls) 。
+使用过程中发现任何问题都可以提交 [Issue](https://atomgit.com/CPF-RN/rntpc_openinstall-react-native/issues)，当然，也非常欢迎提交 [PR](https://atomgit.com/CPF-RN/rntpc_openinstall-react-native/pulls) 。
 
 ## 开源协议
 

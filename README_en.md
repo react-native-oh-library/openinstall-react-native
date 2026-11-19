@@ -6,11 +6,11 @@
 
 This project is based on [openinstall-react-native](https://github.com/OpenInstall/openinstall-react-native).
 
-The version correspondence details are as follows:
+This third-party library has been migrated to AtomGit and is now available for direct download from npm, the new package name is: `@react-native-ohos/openinstall-react-native`, the version correspondence details are as follows:
 
 | Name | Version(Npm Address) | Release Information | Supported RN Version | Supported Autolink | Compile API Version | Community Baseline Version | Source code address |
 | --------------| -------------- | ------------------------------ | ------------- | ------------- |------------------------ | ------------ | ------------- | 
-| @react-native-ohos/openinstall-react-native | [~ 2.0.0](https://www.npmjs.com/package/@react-native-ohos/openinstall-react-native)    | [Gitcode Releases](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/releases) | 0.72.*/0.77./\*0.82./\*0.84.\*/ | Yes | API12+ | 2.0.0 | [master](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native) |
+| @react-native-ohos/openinstall-react-native | [~ 2.0.0](https://www.npmjs.com/package/@react-native-ohos/openinstall-react-native)    | [AtomGit Releases](https://atomgit.com/CPF-RN/rntpc_openinstall-react-native/releases) | 0.72.*/0.77./\*0.82./\*0.84.\*/\*0.86.\*/ | Yes | API12+ | 2.0.0 | [master](https://atomgit.com/CPF-RN/rntpc_openinstall-react-native) |
 
 ## Introduction
 
@@ -38,9 +38,9 @@ yarn add @react-native-ohos/openinstall-react-native
 
 |                                      | Supported Autolink | Supported RN Version |
 |--------------------------------------|--------------------|----------------------|
-| ~ 2.0.0                              | Yes                | 0.72.*/0.77./\*0.82./\*0.84.\*/                 |
+| ~ 2.0.0                              | Yes                | 0.72.*/0.77./\*0.82./\*0.84.\*/\*0.86.\*/                 |
 
-Projects using AutoLink need to be configured according to this document, AutoLink framework guide: https://gitcode.com/CPF-RN/ohos_react_native/blob/master/docs/zh-cn/Autolinking.md
+Projects using AutoLink need to be configured according to this document, AutoLink framework guide: https://atomgit.com/CPF-RN/ohos_react_native/blob/main/docs/en/02-development/02-development-guide/autolinking.md .
 
 If the version you are using supports Autolink and the project has integrated Autolink, you can skip the ManualLink configuration.
 
@@ -58,7 +58,7 @@ For more information about the purpose of this field, please refer to the [offic
 ```json
 {
   "overrides": {
-    "@rnoh/react-native-openharmony": "^0.72.38" // ohpm version
+    "@rnoh/react-native-openharmony": "^0.86.1" // ohpm version
     // "@rnoh/react-native-openharmony" : "./react_native_openharmony.har" // a locally available HAR package
     // "@rnoh/react-native-openharmony" : "./react_native_openharmony" // source code directory
   }
@@ -74,7 +74,7 @@ Currently, two methods are available:
 
 Method 1 (recommended): Use the HAR file.
 
-> [!TIP] The HAR file is stored in the `harmony` directory in the installation path of the third-party library; the native dependency `@openinstall/sdk` (OHPM) is installed automatically together with the HAR file.
+> [!TIP] The HAR file is stored in the `harmony` directory in the installation path of the third-party library.
 
 Open `entry/oh-package.json5` file and add the following dependencies:
 
@@ -117,6 +117,8 @@ target_link_libraries(rnoh_app PUBLIC rnoh)
 + target_link_libraries(rnoh_app PUBLIC openinstall_react_native)
 ```
 
+### 4. Register the Package (C++ Side)
+
 Open `entry/src/main/cpp/PackageProvider.cpp` and add the following code:
 
 ```diff
@@ -132,7 +134,7 @@ Open `entry/src/main/cpp/PackageProvider.cpp` and add the following code:
   }
 ```
 
-### 4. Introducing OpeninstallReactNativePackage to ArkTS
+### 5. Introducing OpeninstallReactNativePackage to ArkTS
 
 Open `entry/src/main/ets/RNPackagesFactory.ets` and add the following code:
 
@@ -167,7 +169,7 @@ Then build and run the code.
 
 This document is verified based on the following versions:
 
-1.RNOH: 0.84.2; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.878; ROM:6.0.0.130;
+1.RNOH: 0.86.1; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.878; ROM:6.0.0.130;
 
 ### Permission Requirements
 
@@ -184,7 +186,7 @@ requestPermissions: [
 ],
 ```
 
-### API requirements (Keep existing, remove otherwise.)
+### Compile and Run API Requirements
 
 > [!TIP] All versions of the current third-party libraries have implemented version isolation, supporting compilation in `API12+` projects and execution on `API12+` ROMs.
 
@@ -339,6 +341,8 @@ openinstall.reportShare('c0011', 'QQ', (ret) => {
 
 ## Other
 
+None.
+
 ## Directory Structure
 
 ````
@@ -364,7 +368,7 @@ openinstall.reportShare('c0011', 'QQ', (ret) => {
 
 ## How to Contribute
 
-If you find any problem when using openinstall-react-native, submit an [issue](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/issues) or a [PR](https://gitcode.com/CPF-RN/rntpc_openinstall-react-native/pulls).
+If you find any problem when using openinstall-react-native, submit an [issue](https://atomgit.com/CPF-RN/rntpc_openinstall-react-native/issues) or a [PR](https://atomgit.com/CPF-RN/rntpc_openinstall-react-native/pulls).
 
 ## License
 
